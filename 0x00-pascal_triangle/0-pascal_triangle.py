@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""Creates a function that returns integers representing Pascal's Triangle"""
+
+
 def generate_pascals_triangle(n):
     triangle = []
     for i in range(n):
