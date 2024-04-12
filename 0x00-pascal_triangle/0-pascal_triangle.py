@@ -3,7 +3,9 @@
 
 
 def generate_pascals_triangle(n):
-    triangle = []
+    """
+    Print the triangle
+    """    
     for i in range(n):
         row = [1] * (i + 1)
         for j in range(1, i):
@@ -15,6 +17,9 @@ def generate_pascals_triangle(n):
     return triangle
 
 def pascal_triangle(n):
+    """
+    Print the triangle
+    """
     triangle = generate_pascals_triangle(n)
     return triangle
 
