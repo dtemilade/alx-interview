@@ -5,7 +5,8 @@
 def generate_pascals_triangle(n):
     """
     Print the triangle
-    """    
+    """
+    triangle = []
     for i in range(n):
         row = [1] * (i + 1)
         for j in range(1, i):
