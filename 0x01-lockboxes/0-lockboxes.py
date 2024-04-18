@@ -5,7 +5,7 @@ Lockboxes
 This script determines if all the boxes can be opened.
 
 Args:
-    boxes (list): A list of lists representing the lockboxes and their keys.
+    boxes (list): lists representing the lockboxes and their keys.
 
 Returns:
     bool: True if all boxes can be opened, False otherwise.
@@ -16,7 +16,7 @@ def canUnlockAll(boxes):
     Determine if all the boxes can be opened.
 
     Args:
-        boxes (list): A list of lists representing the lockboxes and their keys.
+        boxes (list): lists representing the lockboxes and their keys.
 
     Returns:
         bool: True if all boxes can be opened, False otherwise.
