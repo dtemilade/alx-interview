@@ -7,6 +7,7 @@ This script determines if all the boxes can be opened.
 
 from collections import deque
 
+
 def canUnlockAll(boxes):
     """
     Determines if all the boxes can be opened.
