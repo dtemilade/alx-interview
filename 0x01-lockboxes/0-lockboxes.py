@@ -7,7 +7,7 @@ This script determines if all the boxes can be opened.
 
 def canUnlockAll(boxes):
     """
-    Methods that determine if all the boxes can be opened.
+    Determines if all the boxes can be opened.
     """
 
     if len(boxes[0]) == 0:
