@@ -1,3 +1,10 @@
+#!/usr/bin/python3
+"""
+Lockboxes
+This script determines if all the boxes can be opened.
+"""
+
+
 def canUnlockAll(boxes):
     """
     Determines if all the boxes can be opened.
@@ -6,20 +13,16 @@ def canUnlockAll(boxes):
     if not boxes:
         return False
 
-    keys = {0}
-    open_boxes = {0}
-    total_boxes = len(boxes)
+    from collections import deque
 
-    while total_boxes > 0:
-        new_keys = set()
-        for idx in keys:
-            if idx >= total_boxes:
-                continue
-            if idx in open_boxes:
-                continue
-            new_keys = new_keys.union(boxes[idx])
-            open_boxes.add(idx)
-        keys = keys.union(new_keys)
-        total_boxes -= 1
+    queue = deque([0])
+    open_boxes = set(queue)
+
+    while queue:
+        current_box = queue.popleft()
+        for key in boxes[current_box]:
+            if key not in open_boxes:
+                queue.append(key)
+                open_boxes.add(key)
 
     return len(open_boxes) == len(boxes)
