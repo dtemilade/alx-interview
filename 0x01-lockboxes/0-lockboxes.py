@@ -1,3 +1,10 @@
+#!/usr/bin/python3
+"""
+Lockboxes
+This script determines if all the boxes can be opened.
+"""
+
+
 from collections import deque
 
 def canUnlockAll(boxes):
