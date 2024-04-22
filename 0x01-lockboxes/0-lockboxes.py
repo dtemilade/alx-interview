@@ -1,9 +1,4 @@
-#!/usr/bin/python3
-"""
-Lockboxes
-This script determines if all the boxes can be opened.
-"""
-
+from collections import deque
 
 def canUnlockAll(boxes):
     """
@@ -13,7 +8,9 @@ def canUnlockAll(boxes):
     if not boxes:
         return False
 
-    from collections import deque
+    total_boxes = len(boxes)
+    if total_boxes == 1 and not boxes[0]:  # If there's only one box and it's empty
+        return True
 
     queue = deque([0])
     open_boxes = set(queue)
@@ -25,4 +22,4 @@ def canUnlockAll(boxes):
                 queue.append(key)
                 open_boxes.add(key)
 
-    return len(open_boxes) == len(boxes)
+    return len(open_boxes) == total_boxes
