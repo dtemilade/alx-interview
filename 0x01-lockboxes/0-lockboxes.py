@@ -5,29 +5,26 @@ This script determines if all the boxes can be opened.
 """
 
 
-from collections import deque
-
-
 def canUnlockAll(boxes):
     """
-    Determines if all the boxes can be opened.
+    Methods that determine if all the boxes can be opened.
     """
 
-    if not boxes:
+    if len(boxes[0]) == 0:
         return False
 
+    keys = {0}
+    open_boxes = {0}
     total_boxes = len(boxes)
-    if total_boxes == 1 and not boxes[0]:  # If there's only one box and it's empty
-        return True
+    keys = keys.union(boxes[0])
 
-    queue = deque([0])
-    open_boxes = set(queue)
+    while total_boxes > 0:
+        for idx in keys:
+            if idx in open_boxes:
+                continue
+            keys = keys.union(boxes[idx])
+            open_boxes.add(idx)
+        total_boxes -= 1
 
-    while queue:
-        current_box = queue.popleft()
-        for key in boxes[current_box]:
-            if key not in open_boxes:
-                queue.append(key)
-                open_boxes.add(key)
+    return len(keys) == len(boxes)
 
-    return len(open_boxes) == total_boxes
