@@ -1,28 +1,25 @@
-#!/usr/bin/python3
-"""
-Lockboxes
-This script determines if all the boxes can be opened.
-"""
-
 def canUnlockAll(boxes):
     """
-    Methods that determine if all the boxes can be opened.
+    Determines if all the boxes can be opened.
     """
 
-    if len(boxes[0]) == 0:
+    if not boxes:
         return False
 
     keys = {0}
     open_boxes = {0}
     total_boxes = len(boxes)
-    keys = keys.union(boxes[0])
 
     while total_boxes > 0:
+        new_keys = set()
         for idx in keys:
+            if idx >= total_boxes:
+                continue
             if idx in open_boxes:
                 continue
-            keys = keys.union(boxes[idx])
+            new_keys = new_keys.union(boxes[idx])
             open_boxes.add(idx)
+        keys = keys.union(new_keys)
         total_boxes -= 1
 
-    return len(keys) == len(boxes)
+    return len(open_boxes) == len(boxes)
