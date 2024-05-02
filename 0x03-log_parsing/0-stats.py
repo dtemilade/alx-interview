@@ -1,79 +1,86 @@
 #!/usr/bin/python3
-'''Script that reads stdin line by line and computes metrics.
+'''script that reads stdin line by line and computes metrics
 '''
-
 import re
 
-def read_input_line(line):
-    '''Reads and extracts information from a line of an HTTP-request log.
-    Args:
-        line (str): The line of input to extract information from.
-    Returns:
-        dict: A dictionary containing the extracted information.
+
+def reads_inputs(lines):
+    '''read sections of a line of an HTTP-request log.
     '''
-    pattern = (
+    fp = (
         r'\s*(?P<ip>\S+)\s*',
-        r'\s*\[(?P<date>\d+-\d+-\d+ \d+:\d+:\d+\.\d+)\]',
+        r'\s*\[(?P<date>\d+\-\d+\-\d+ \d+:\d+:\d+\.\d+)\]',
         r'\s*"(?P<request>[^"]*)"\s*',
         r'\s*(?P<status_code>\S+)',
-        r'\s*(?P<file_size>\d+)'
+        r'\s*(?P<var_size>\d+)'
     )
-    info = {'status_code': 0, 'file_size': 0}
-    line_pattern = '{}\-{}{}{}{}\\s*'.format(pattern[0], pattern[1], pattern[2], pattern[3], pattern[4])
-    match = re.fullmatch(line_pattern, line)
-    if match:
-        status_code = match.group('status_code')
-        file_size = int(match.group('file_size'))
+    info = {
+        'status_code': 0,
+        'var_size': 0,
+    }
+    val_log = '{}\\-{}{}{}{}\\s*'.format(fp[0], fp[1], fp[2], fp[3], fp[4])
+    retval = re.fullmatch(val_log, lines)
+    if retval is not None:
+        status_code = retval.group('status_code')
+        var_size = int(retval.group('var_size'))
         info['status_code'] = status_code
-        info['file_size'] = file_size
+        info['var_size'] = var_size
     return info
 
-def print_statistics(total_file_size, status_code_stats):
-    '''Prints accumulated statistics.
-    Args:
-        total_file_size (int): The total size of all files.
-        status_code_stats (dict): A dictionary containing status code statistics.
-    '''
-    print('Total file size: {:d}'.format(total_file_size), flush=True)
-    for status_code in sorted(status_code_stats.keys()):
-        count = status_code_stats.get(status_code, 0)
-        if count > 0:
-            print('{:s}: {:d}'.format(status_code, count), flush=True)
 
-def update_statistics(line, total_file_size, status_code_stats):
-    '''Updates statistics based on a given line of HTTP-request log.
+def stat_retval(total_var_size, status_codes_stats):
+    '''Output the accumulated statistics.
+    '''
+    print('File size: {:d}'.format(total_var_size), flush=True)
+    for status_code in sorted(status_codes_stats.keys()):
+        num = status_codes_stats.get(status_code, 0)
+        if num > 0:
+            print('{:s}: {:d}'.format(status_code, num), flush=True)
+
+
+def update_val(line, total_var_size, status_codes_stats):
+    '''Updates the metrics from a given HTTP-request.
     Args:
-        line (str): The line of input to update statistics from.
-        total_file_size (int): The current total file size.
-        status_code_stats (dict): A dictionary containing status code statistics.
+        line (str): The line of input to retrieve the metrics.
     Returns:
         int: The new total file size.
     '''
-    line_info = read_input_line(line)
+    line_info = reads_inputs(line)
     status_code = line_info.get('status_code', '0')
-    if status_code in status_code_stats:
-        status_code_stats[status_code] += 1
-    return total_file_size + line_info['file_size']
+    if status_code in status_codes_stats.keys():
+        status_codes_stats[status_code] += 1
+    return total_var_size + line_info['var_size']
+
 
 def run():
-    '''Executes the log parser.
+    '''Running the log parser.
     '''
     line_num = 0
-    total_file_size = 0
-    status_code_stats = {
-        '200': 0, '301': 0, '400': 0, '401': 0,
-        '403': 0, '404': 0, '405': 0, '500': 0
+    total_var_size = 0
+    status_codes_stats = {
+        '200': 0,
+        '301': 0,
+        '400': 0,
+        '401': 0,
+        '403': 0,
+        '404': 0,
+        '405': 0,
+        '500': 0,
     }
     try:
         while True:
             line = input()
-            total_file_size = update_statistics(
-                line, total_file_size, status_code_stats)
+            total_var_size = update_val(
+                line,
+                total_var_size,
+                status_codes_stats,
+            )
             line_num += 1
             if line_num % 10 == 0:
-                print_statistics(total_file_size, status_code_stats)
+                stat_retval(total_var_size, status_codes_stats)
     except (KeyboardInterrupt, EOFError):
-        print_statistics(total_file_size, status_code_stats)
+        stat_retval(total_var_size, status_codes_stats)
+
 
 if __name__ == '__main__':
     run()
