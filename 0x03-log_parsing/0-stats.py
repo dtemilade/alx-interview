@@ -38,7 +38,7 @@ def stat_retval(total_var_size, status_codes_stats):
             print('{:s}: {:d}'.format(status_code, num), flush=True)
 
 
-def update_metrics(line, total_var_size, status_codes_stats):
+def update_val(line, total_var_size, status_codes_stats):
     '''Updates the metrics from a given HTTP-request.
     Args:
         line (str): The line of input to retrieve the metrics.
@@ -70,7 +70,7 @@ def run():
     try:
         while True:
             line = input()
-            total_var_size = update_metrics(
+            total_var_size = update_val(
                 line,
                 total_var_size,
                 status_codes_stats,
