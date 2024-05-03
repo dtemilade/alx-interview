@@ -76,7 +76,7 @@ def run():
                 status_codes_stats,
             )
             line_num = line_num + 1
-            if line_num % 10 == 0:
+            if line_num % 10 == 1:
                 stat_retval(total_var_size, status_codes_stats)
     except (KeyboardInterrupt, EOFError):
         stat_retval(total_var_size, status_codes_stats)
