@@ -5,9 +5,9 @@ const filmID = process.argv[2];
 
 async function starwarsCharacters (filmId) {
   const endpoint = 'https://swapi-api.hbtn.io/api/films/' + filmId;
-  let response = await (await request(endpoint)).body;
-  response = JSON.parse(response);
-  const characters = response.characters;
+  let res = await (await request(endpoint)).body;
+  res = JSON.parse(res);
+  const characters = res.characters;
 
   for (let i = 0; i < characters.length; i++) {
     const urlCharacter = characters[i];
