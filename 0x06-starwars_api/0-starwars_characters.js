@@ -1,20 +1,20 @@
 #!/usr/bin/node
-const request = require('request');
+const util = require('util');
+const request = util.promisify(require('request'));
+const filmID = process.argv[2];
 
-if (process.argv.length > 2) {
-  request(`https://swapi-api.alx-tools.com/api/films/${process.argv[2]}`, (err, res, body) => {
-    if (err) console.log(err);
-    const json = JSON.parse(body);
-    const characters = json.characters.map(
-      (item) => new Promise((resolve, reject) => {
-        request(item, (err, res, body) => {
-          if (err) reject(err);
-          resolve(JSON.parse(body).name);
-        });
-      }));
+async function starwarsretval (filmId) {
+  const endpoint = 'https://swapi-api.alx-tools.com/api/films/' + filmId;
+  let res = await (await request(endpoint)).body;
+  res = JSON.parse(res);
+  const retval = res.retval;
 
-    Promise.all(characters)
-      .then((names) => console.log(names.join('\n')))
-      .catch((err) => console.log(err));
-  });
+  for (let i = 0; i < retval.length; i++) {
+    const retval = retval[i];
+    let chars = await (await request(retval)).body;
+    chars = JSON.parse(chars);
+    console.log(chars.name);
+  }
 }
+
+starwarsretval(filmID);
