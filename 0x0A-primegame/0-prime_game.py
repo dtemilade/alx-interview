@@ -43,7 +43,7 @@ def getPrimes(n):
 
 
 def isWinner(x, nums):
-    """  
+    """
     Maria and Ben play x rounds of the game,
     where n may be different for each round.
     Assuming Maria always goes first and both players play optimally,
